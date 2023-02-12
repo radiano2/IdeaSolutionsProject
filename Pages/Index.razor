@@ -1,0 +1,64 @@
+﻿@page "/"
+
+<PageTitle>Sieve of Eratosthenes</PageTitle>
+
+<h1>Sieve of Eratosthenes</h1>
+
+<h2>Number of elements : @ListOfPrimes.Count</h2>
+
+@foreach (var item in ListOfPrimes)
+{
+    <strong>@item</strong>
+    <br>
+}
+
+
+
+
+
+
+
+@code
+{
+    public List<int> ListOfPrimes { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ListOfPrimes = GetFirst1000PrimeNumbers();
+
+        base.OnInitialized();
+    }
+
+    static List<int> GetFirst1000PrimeNumbers()
+    {
+        List<int> primeNumbers = new List<int>();
+        int n = 7919;
+        bool[] isPrime = new bool[n + 1];
+
+        for (int i = 2; i <= n; i++)
+        {
+            isPrime[i] = true;
+        }
+
+        for (int p = 2; p * p <= n; p++)
+        {
+            if (isPrime[p] == true)
+            {
+                for (int i = p * 2; i <= n; i += p)
+                {
+                    isPrime[i] = false;
+                }
+            }
+        }
+
+        for (int i = 2; i <= n; i++)
+        {
+            if (isPrime[i] == true)
+                primeNumbers.Add(i);
+            if (primeNumbers.Count == 1000)
+                break;
+        }
+
+        return primeNumbers;
+    }
+}
